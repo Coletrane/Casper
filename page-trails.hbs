@@ -1,0 +1,186 @@
+{{!< default}}
+{{!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template --}}
+{{#contentFor "head"}}
+  <link rel="stylesheet"
+        type="text/css"
+        href="{{asset "css/slick.css"}}"/>
+{{/contentFor}}
+
+<header class="site-header outer mtbva-parallax"
+        style="background-image: url('/content/images/2018/09/middle-mt.jpg');">
+  <div class="inner">
+    <div class="site-header-content">
+      <h1 class="site-title">
+        Trails
+      </h1>
+    </div>
+  </div>
+</header>
+
+{{!-- The main content area --}}
+<main id="site-main"
+      class="site-main outer">
+  <div class="inner mtbva-trails">
+    <iframe scrolling="no"
+            frameborder="0"
+            allowfullscreen="1"
+            width="100%"
+            id="regioninfo0">
+    </iframe>
+    <iframe scrolling="no"
+            frameborder="0"
+            allowfullscreen="1"
+            width="100%"
+            id="map0">
+    </iframe>
+  </div>
+  <div class="trail-areas-wrapper">
+    <h2 class="trail-areas-title">Trail Areas</h2>
+    <div class="trail-areas">
+      <h3>Carvins Cove</h3>
+      <div class="trail-area"
+           data-location="carvins-cove">
+        {{#get "posts" filter="tags:location-carvins-cove" include="authors,tags" as |carvins|}}
+          {{#foreach carvins}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+      <h3>Mill Mountain</h3>
+      <div class="trail-area"
+           data-location="mill-mountain">
+        {{#get "posts" filter="tags:location-mill-mountain" include="authors,tags" as |mill|}}
+          {{#foreach mill}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+      <h3>Blue Ridge</h3>
+      <div class="trail-area"
+           data-location="blue-ridge">
+        {{#get "posts" filter="tags:location-blue-ridge" include="authors,tags" as |blueridge|}}
+          {{#foreach blueridge}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+      <h3>Dragon's Back</h3>
+      <div class="trail-area"
+           data-location="dragons-back">
+        {{#get "posts" filter="tags:location-dragons-back" include="authors,tags" as |dragonsback|}}
+          {{#foreach dragonsback}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+      <h3>Pandapas Pond</h3>
+      <div class="trail-area"
+           data-location="pandapas">
+        {{#get "posts" filter="tags:location-pandapas" include="authors,tags" as |pandapas|}}
+          {{#foreach pandapas}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+      <h3>Arcadia</h3>
+      <div class="trail-area"
+           data-location="arcadia">
+        {{#get "posts" filter="tags:location-arcadia" include="authors,tags" as |arcadia|}}
+          {{#foreach arcadia}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+      <h3>Douthat State Park</h3>
+      <div class="trail-area"
+           data-location="douthat">
+        {{#get "posts" filter="tags:location-douthat" include="authors,tags" as |douthat|}}
+          {{#foreach douthat}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+      <h3>Hoop Hole</h3>
+      <div class="trail-area"
+           data-location="hoop-hole">
+        {{#get "posts" filter="tags:location-hoop-hole" include="authors,tags" as |hoophole|}}
+          {{#foreach hoophole}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+      <h3>Massanutten Western Slope</h3>
+      <div class="trail-area"
+           data-location="massanutten">
+        {{#get "posts" filter="tags:location-massanutten" include="authors,tags" as |mass|}}
+          {{#foreach mass}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+      <h3>Massanutten Bike Park</h3>
+      <div class="trail-area"
+           data-location="massanutten-bike-park">
+        {{#get "posts" filter="tags:location-massanutten-bike-park" include="authors,tags" as |mass|}}
+          {{#foreach mass}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+      <h3>Stokesville</h3>
+      <div class="trail-area"
+           data-location="stokesville">
+        {{#get "posts" filter="tags:location-stokesville" include="authors,tags" as |stokesville|}}
+          {{#foreach stokesville}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+      <h3>Candlers Mountain</h3>
+      <div class="trail-area"
+           data-location="candlers">
+        {{#get "posts" filter="tags:location-candlers" include="authors,tags" as |candlers|}}
+          {{#foreach candlers}}
+            <div class="trail-area-card">
+              {{> "post-card"}}
+            </div>
+          {{/foreach}}
+        {{/get}}
+      </div>
+    </div>
+  </div>
+</main>
+
+{{#contentFor "scripts"}}
+  <script type="text/javascript"
+          src="{{asset "js/slick.min.js"}}"></script>
+  <script type="text/javascript"
+          src="{{asset "js/trailforks.js"}}"></script>
+  <script type="text/javascript"
+          src="{{asset "js/trails.js"}}"></script>
+{{/contentFor}}
+
+

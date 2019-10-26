@@ -1,0 +1,11 @@
+<div id="mtbva-menu"
+     class="mtbva-menu"
+     data-hidden="true">
+  <a class="mtbva-menu-close"
+     href="javascript:toggleMenu()">
+    {{> "icons/times-circle-regular"}}
+  </a>
+  {{#if @site.navigation}}
+    {{navigation}}
+  {{/if}}
+</div>

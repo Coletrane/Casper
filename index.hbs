@@ -1,0 +1,103 @@
+{{!< default}}
+{{!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template --}}
+
+{{!-- The big featured header, it uses blog cover image as a BG if available --}}
+<header class="site-header outer mtbva-parallax"
+        style="background-image: url({{@site.cover_image}});">
+  <div class="inner">
+    <div class="site-header-content">
+      <h1 class="site-title">
+        {{@site.title}}
+      </h1>
+      <h2 class="site-description">
+        Exposing the trove of trails in the Old Dominion.
+      </h2>
+    </div>
+  </div>
+</header>
+
+{{!-- The main content area --}}
+<main id="site-main"
+      class="site-main outer">
+  <div class="post-feed">
+<!--    <article class="post-card">-->
+<!--      <a class="post-card-image-link"-->
+<!--         href="https://luvtrails.com">-->
+<!--        <div class="post-card-image"-->
+<!--             style="background-image: url(-->
+<!--             /content/images/2019/02/luvtrails.jpg-->
+<!--           )">-->
+<!--        </div>-->
+<!--      </a>-->
+<!--      <div class="post-card-content">-->
+<!--        <div class="post-card-content-link">-->
+<!--          <header class="post-card-header">-->
+<!--            <h2 class="post-card-title">Download the LuvTrails app and donate to your favorite trails!</h2>-->
+<!--          </header>-->
+<!--          <section class="post-card-excerpt">-->
+<!--            <p>-->
+<!--              We have partnered with leading trail owners and advocacy organizations to create a platform dedicated to-->
+<!--              the-->
+<!--              relationship between them and the millions of trail users.-->
+<!--            </p>-->
+<!--            <div class="app-store-links">-->
+<!--              <a href="https://itunes.apple.com/us/app/luvtrails/id1318099045?ls=1&amp;mt=8">-->
+<!--                <img src="https://d3e4ir3yws1r9n.cloudfront.net/wp-content/uploads/2018/10/Apple_Store_1429x381.png"-->
+<!--                     class="attachment-layers--large size-layers--large"-->
+<!--                     alt="Luv Trails on the iOS App Store"-->
+<!--                     srcset="https://d3e4ir3yws1r9n.cloudfront.net/wp-content/uploads/2018/10/Apple_Store_1429x381.png 1429w, https://d3e4ir3yws1r9n.cloudfront.net/wp-content/uploads/2018/10/Apple_Store_1429x381-300x80.png 300w, https://d3e4ir3yws1r9n.cloudfront.net/wp-content/uploads/2018/10/Apple_Store_1429x381-768x205.png 768w, https://d3e4ir3yws1r9n.cloudfront.net/wp-content/uploads/2018/10/Apple_Store_1429x381-1024x273.png 1024w"-->
+<!--                     sizes="(max-width: 1429px) 100vw, 1429px"-->
+<!--                     data-pagespeed-url-hash="403123369">-->
+<!--              </a>-->
+<!--              <a href="https://play.google.com/store/apps/details?id=com.luvtrails.app">-->
+<!--                <img id="lt-google-play"-->
+<!--                     src="https://d3e4ir3yws1r9n.cloudfront.net/wp-content/uploads/2018/10/Google_Store_1429x381.png"-->
+<!--                     class="attachment-layers--large size-layers--large"-->
+<!--                     alt="LuvTrails Andriod App"-->
+<!--                     srcset="https://d3e4ir3yws1r9n.cloudfront.net/wp-content/uploads/2018/10/Google_Store_1429x381.png 1429w, https://d3e4ir3yws1r9n.cloudfront.net/wp-content/uploads/2018/10/Google_Store_1429x381-300x80.png 300w, https://d3e4ir3yws1r9n.cloudfront.net/wp-content/uploads/2018/10/Google_Store_1429x381-768x205.png 768w, https://d3e4ir3yws1r9n.cloudfront.net/wp-content/uploads/2018/10/Google_Store_1429x381-1024x273.png 1024w"-->
+<!--                     sizes="(max-width: 1429px) 100vw, 1429px"-->
+<!--                     data-pagespeed-url-hash="1380765216">-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          </section>-->
+<!--          <footer class="post-card-meta">-->
+<!--          </footer>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </article>-->
+
+    {{#get "posts" limit="all" filter="featured:true" as |featured|}}
+      {{#foreach featured}}
+        {{> "post-card"}}
+      {{/foreach}}
+    {{/get}}
+    <article class="post-card index-yt-container"
+             style="flex: 1 1 999999px; min-height: 1px;">
+      <div class="post-card-image-link">
+        <iframe src="https://www.youtube.com/embed/mYrFHOtAfXk"
+                frameborder="0"
+                allowfullscreen>
+        </iframe>
+      </div>
+    </article>
+    {{#get "posts" limit="all" filter="featured:false" as |notFeatured|}}
+      {{#foreach notFeatured}}
+        {{> "post-card"}}
+      {{/foreach}}
+    {{/get}}
+  </div>
+</main>
+{{#contentFor "scripts"}}
+  <script>
+    $(document).ready(function() {
+      window.initHomeBetweenPosts(
+        [],
+        true,
+        3,
+        2,
+        4
+      );
+    });
+  </script>
+{{/contentFor}}

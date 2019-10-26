@@ -1,0 +1,93 @@
+{{!< default}}
+{{!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template --}}
+{{#contentFor "head"}}
+  <style>
+    .post-full-meta {
+      display: none;
+    }
+    @media (max-width: 500px) {
+      .post-full-content h2 {
+        font-size: 2.2rem;
+      }
+      .post-full-content h3 {
+        font-size: 2rem;
+      }
+      .post-full-content p {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+{{/contentFor}}
+
+<header class="site-header outer mtbva-parallax"
+        style="background-image: url({{post.feature_image}});">
+</header>
+
+{{!-- The main content area --}}
+<main id="site-main"
+      class="site-main outer">
+  <section class="post-full-content">
+    <h2 style="text-align: center;">2019 Course Maps</h2>
+    <div class="post-content">
+      <h3 class="trailforks-route-title">
+        Creature from Carvins Cove Enduro Open/Pro 2019
+      </h3>
+      <div class="TrailforksWidgetRoute"
+           data-id="16397"
+           data-map="1"
+           data-elevation="1"
+           data-section="0"
+           data-units="imperial"></div>
+      <h3 class="trailforks-route-title">
+        Creature from Carvins Cove Enduro Junior, Beginner, Men 50+, Women 40+
+      </h3>
+      <div class="TrailforksWidgetRoute"
+           data-id="16201"
+           data-map="1"
+           data-elevation="1"
+           data-section="0"
+           data-units="imperial"></div>
+      <h3 class="trailforks-route-title">
+        Creature from Carvins Cove XC 16 Mile
+      </h3>
+      <div class="TrailforksWidgetRoute"
+           data-id="15691"
+           data-map="1"
+           data-elevation="1"
+           data-section="0"
+           data-units="imperial"></div>
+      <h3 class="trailforks-route-title">
+        Creature from Carvins Cove XXC/XC Marathon 42 Mile
+      </h3>
+      <div class="TrailforksWidgetRoute"
+           data-id="15706"
+           data-map="1"
+           data-elevation="1"
+           data-section="0"
+           data-units="imperial"></div>
+    </div>
+  </section>
+
+  <div class="post-feed">
+    {{#get "posts" limit="all" filter="tags:[creature, location-carvins-cove]" include="authors,tags" as |carvins|}}
+      {{#foreach carvins}}
+        {{> "post-card"}}
+      {{/foreach}}
+    {{/get}}
+  </div>
+</main>
+
+{{#contentFor "scripts"}}
+  <script>
+    $(document).ready(function() {
+      window.initHomeBetweenPosts(
+        ['creature'],
+        false,
+        0,
+        2,
+        3
+      );
+    });
+  </script>
+{{/contentFor}}

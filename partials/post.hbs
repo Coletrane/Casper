@@ -1,0 +1,49 @@
+<div class="post-header-content">
+  <section class="post-full-meta">
+    <time class="post-full-meta-date"
+          datetime="{{date format="YYYY-MM-DD"}}">{{date format="D MMMM YYYY"}}</time>
+    {{#primary_tag}}
+      <span class="date-divider">/</span>
+      <a class="post-full-meta-primary-tag"
+         href="{{url}}">{{name}}</a>
+    {{/primary_tag}}
+  </section>
+  <h1 class="post-full-title">{{title}}</h1>
+</div>
+<main id="site-main"
+      class="site-main">
+  <article class="post-full {{post_class}} {{#unless feature_image}}no-image{{/unless}}">
+    <header class="post-full-header mtbva-parallax"
+            style="background-image: url({{feature_image}})">
+    </header>
+    <section class="post-full-content">
+      <div class="post-content">
+        {{content}}
+      </div>
+    </section>
+
+    {{!-- Email subscribe form at the bottom of the page --}}
+    {{#if @labs.subscribers}}
+      <section class="subscribe-form">
+        <h3 class="subscribe-form-title">Subscribe to {{@site.title}}</h3>
+        <p>Get the latest posts delivered right to your inbox</p>
+        {{subscribe_form placeholder="youremail@example.com"}}
+      </section>
+    {{/if}}
+
+    <footer class="post-full-footer">
+      {{!-- There are two options for how we display the byline/author-info.
+      If the post has more than one author, we load a specific template
+      from includes/byline-multiple.hbs, otherwise, we just use the
+      default byline. --}}
+
+      {{> "author"}}
+    </footer>
+
+    {{!--
+    <section class="post-full-comments">
+        If you want to embed comments, this is a good place to do it!
+    </section>
+    --}}
+  </article>
+</main>

@@ -1,0 +1,213 @@
+{{!< default}}
+{{!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template --}}
+
+<header class="site-header outer mtbva-parallax"
+        style="background-image: url({{post.feature_image}});">
+  <div class="inner">
+    <div class="site-header-content">
+      <h1 class="site-title">
+        Results
+      </h1>
+    </div>
+  </div>
+</header>
+
+{{!-- The main content area --}}
+<main id="site-main"
+      class="site-main">
+  <div class="inner mtbva-results">
+    <select id="race-select"
+            class="race-select">
+      <option value="creature-from-carvins-cove-enduro-2019">
+        Creature from Carvins Cove Enduro 2019
+      </option>
+      <option value="creature-from-carvins-cove-xc-2019">
+        Creature from Carvins Cove XC and XXC/XC Marathon 2019
+      </option>
+      <option value="middle-mountain-momma-2019">
+        Middle Mountain Momma 2019
+      </option>
+      <option value="creature-from-carvins-cove-2018">
+        Creature from Carvins Cove 2018
+      </option>
+      <option value="middle-mountain-momma-2018">
+        Middle Mountain Momma 2018
+      </option>
+      <option value="battle-at-blackhorse-2018">
+        Battle at Blackhorse 2018
+      </option>
+      <option value="creature-from-carvins-cove-2017">
+        Creature from Carvins Cove 2017
+      </option>
+      <option value="middle-mountain-momma-2017">
+        Middle Mountain Momma 2017
+      </option>
+      <option value="creature-from-carvins-cove-2016">
+        Creature from Carvins Cove 2016
+      </option>
+      <option value="middle-mountain-momma-2016">
+        Middle Mountain Momma 2016
+      </option>
+    </select>
+    <div id="mtbva-results">
+    </div>
+  </div>
+</main>
+
+{{#contentFor "scripts"}}
+  <script>
+  window.mtbvaExternalResults = [
+    {
+      name: 'creature-from-carvins-cove-enduro-2019',
+      url: 'https://www.rootsandrain.com/race7980/2019-oct-19-bikeva-com-creature-duro-carvins-cove-va/results/'
+    },
+    {
+      name: 'creature-from-carvins-cove-xc-2019',
+      url: 'https://www.rootsandrain.com/race7981/2019-oct-20-bikeva-com-creature-from-carvins-cove-carvins-cove-va/results/'
+    },
+    {
+      name: 'middle-mountain-momma-2019',
+      url: 'https://www.rootsandrain.com/race7500/2019-may-5-bikeva-com-middle-mountain-momma-douthat-state-park-va/results/'
+    }
+  ];
+
+  window.mtbvaCurrentRace = 'creature-from-carvins-cove-enduro-2019';
+
+  $(function($) {
+    // Race selection methods
+
+    // Initially loading /results
+    $(document).ready(function() {
+      var initialSelected = $('#race-select').val();
+      var externalResult = mtbvaExternalResults.find(function(result) {
+        return result.name === initialSelected;
+      });
+
+      if (externalResult) {
+        showExternalResult(externalResult);
+      } else {
+        getResultsJson(initialSelected);
+      }
+    });
+
+    // selected by user
+    $('#race-select').on('change', function() {
+      var selectedRace = $('#race-select').val();
+      var externalResult = mtbvaExternalResults.find(function(result) {
+        return result.name === selectedRace;
+      });
+      var hasTable = $.contains(document, $('#' + selectedRace + '-table')[0]);
+
+      if (externalResult) {
+        // build and show result link again
+        showExternalResult(externalResult);
+      } else if (hasTable) {
+        // selected by user again, show from DOM
+        replaceResultsTable(selectedRace);
+      } else {
+        // selected by user, GET and put in window cache
+        getResultsJson(selectedRace);
+      }
+    });
+
+    var queryStrArr = window.location.search.split('=');
+    if (queryStrArr.length === 2) {
+      // url query param
+      $('#race-select').val(queryStrArr[1]);
+      getResultsJson(queryStrArr[1]);
+    }
+
+    function showExternalResult(externalResult) {
+      hidePreviousResults();
+      var externalResultContainer =
+        $('<div class="external-results-container">');
+      var externalResultLink =
+        $(
+          '<a href="' + externalResult.url + '">' +
+          '   View Results and Photos on Roots and Rain' +
+          '</a>'
+        );
+      externalResultContainer.append(externalResultLink);
+      $('#mtbva-results').append(externalResultContainer);
+    }
+
+    function getResultsJson(race) {
+      var externalResult = mtbvaExternalResults.find(function(result) {
+        return result.name === race;
+      });
+      var hasTable = $.contains(document, $('#' + race + '-table')[0]);
+      if (!hasTable && !externalResult) {
+        $.getJSON(
+          window.location.protocol +
+          '//' +
+          window.location.host +
+          '/content/images/data/results/' +
+          race +
+          '.json'
+        ).then(function(res) {
+          var bodyTable = $('<div class="body-table" id="' + race + '-table">');
+          res.classes.forEach(function(clazz) {
+            var classTitle = $('<h2 class="results-class-name">').text(clazz.name);
+            bodyTable.append(classTitle);
+            var table = $('<table>');
+            var tbody = $('<tbody>');
+            clazz.riders.forEach(function(rider, i, arr) {
+              tbody.append($('<tr>')
+                .append(
+                  $('<td>').text(i + 1),
+                  $('<td>').text(rider.name),
+                  $('<td>').text(rider.time)
+                )
+              );
+            });
+            table.append(tbody);
+            bodyTable.append(table);
+          });
+
+          var tableTemplate =
+            ' <div id="' + race + '-results-table" ' +
+            '      class="mtbva-results-table">\n' +
+            '     <div class="header-table">\n' +
+            '       <table>\n' +
+            '         <thead>\n' +
+            '           <tr>\n' +
+            '             <th>Position</th>\n' +
+            '             <th>Name</th>\n' +
+            '             <th>Time</th>\n' +
+            '           </tr>\n' +
+            '         </thead>\n' +
+            '       </table>\n' +
+            '     </div>\n' +
+            '   <div class="body-table"></div>\n' +
+            ' </div>';
+          var fullTable = $(tableTemplate)
+          fullTable.find('.body-table').append(bodyTable)
+
+          replaceResultsTable(race, fullTable);
+        });
+      }
+    }
+
+    function replaceResultsTable(race, table) {
+      hidePreviousResults();
+      if (table) {
+        // insert new table into DOM
+        $('#mtbva-results').append(table);
+      } else {
+        // table is already in the DOM
+        var attachedTable = $('#' + race + '-results-table');
+        attachedTable.css('display', 'table');
+        attachedTable.css('visibility', 'visible');
+      }
+      window.mtbvaCurrentRace = race;
+    }
+
+    function hidePreviousResults() {
+      $('#mtbva-results').children().hide();
+    }
+
+  });
+  </script>
+{{/contentFor}}
+

@@ -1,0 +1,105 @@
+{{!< default}}
+
+{{!-- The tag above means: insert everything in this file
+into the {body} of the default.hbs template --}}
+
+{{!-- Everything inside the #post tags pulls data from the post --}}
+{{#post}}
+
+  <div class="main-post">
+    {{> "post"}}
+  </div>
+  <div class="related-posts">
+    {{#get "posts" filter="id:-{{id}}+tag:{{primary_tag.slug}}" limit="5" include="authors,tags" as |related_posts|}}
+      {{#foreach related_posts}}
+        {{> "post-card"}}
+      {{/foreach}}
+    {{/get}}
+    {{#get "posts" filter="id:-{{id}}+featured:true" limit="all" include="authors,tags" as |featured_posts|}}
+      {{#foreach featured_posts}}
+        {{> "post-card"}}
+      {{/foreach}}
+    {{/get}}
+  </div>
+
+  {{!-- Floating header which appears on-scroll, included from includes/floating-header.hbs --}}
+  {{> floating-header}}
+
+{{/post}}
+
+{{!-- The #contentFor helper here will send everything inside it up to the matching #block helper found in default.hbs --}}
+{{#contentFor "scripts"}}
+  <script>
+    // NOTE: Scroll performance is poor in Safari
+    // - this appears to be due to the events firing much more slowly in Safari.
+    //   Dropping the scroll event and using only a raf loop results in smoother
+    //   scrolling but continuous processing even when not scrolling
+    $(document).ready(function() {
+      // Start fitVids
+      $('iframe').toArray().forEach(function(iframe) {
+        $(iframe).attr('src', $(iframe).attr('data-src'));
+        $(iframe).removeAttr('data-src');
+      });
+      var $postContent = $('.post-full-content');
+      $postContent.fitVids();
+      // End fitVids
+
+      // Start Instagram
+      if (window.mtbvaAPI) {
+        var postSlug = window.location.pathname.replace(/\//g, '');
+        mtbvaAPI.posts.read({ slug: postSlug, include: 'tags' })
+          .then(function(post) {
+            var locationTags = _.filter(post.tags, function(tag) {
+              return tag.name.startsWith('location-');
+            }).map(function(tag) {
+              return tag.name;
+            });
+
+            $.getJSON('/content/images/data/instagram.json')
+              .done(function(data) {
+                var igPostsMatchedLocation = _.filter(data.posts, function(post) {
+                  if (_.intersection(post.locationTags, locationTags).length) {
+                    return post;
+                  }
+                });
+                var igPostsMatchedHashtags = _.filter(data.posts, function(post) {
+                  if (_.intersection(post.hashtags, post.tags).length) {
+                    return post;
+                  }
+                });
+                var igPostsToAttach = _.concat(
+                  igPostsMatchedLocation,
+                  igPostsMatchedHashtags
+                );
+                _.uniqBy(igPostsToAttach, function(post) {
+                  return post.html;
+                });
+
+                var igPostIndex = 0;
+                $('.related-posts .post-card.post')
+                  .toArray()
+                  .forEach(function(postCard) {
+                    function attachIgPost() {
+                      if (igPostsToAttach[igPostIndex]) {
+                        $(postCard).before(window.createIgPost(igPostsToAttach[igPostIndex].html));
+                        igPostIndex += 1;
+                      }
+                    }
+
+                    attachIgPost();
+                    attachIgPost();
+                  });
+                if (igPostIndex > $('.related-posts .post-card.post').toArray().length) {
+                  igPostsToAttach.slice(igPostIndex).forEach(function(igPost) {
+                    $('.related-posts').append(window.createIgPost(igPostsToAttach[igPostIndex].html));
+                    igPostIndex += 1;
+                  });
+                }
+                window.instgrm.Embeds.process();
+              });
+          });
+      }
+      // End Instagram
+    });
+  </script>
+{{/contentFor}}
